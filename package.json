@@ -1,9 +1,10 @@
 {
   "name": "csbind-server",
-  "version": "0.0.0beta0",
+  "version": "0.0.0beta1",
   "main": "./index.js",
   "dependencies": {
-    "underscore-contrib" : "0.3.x"
+    "underscore-contrib" : "0.3.x",
+    "deferred" : "0.7.x"
   },
   "devDependencies": {
     "jasmine-node": "2.0.0-beta4"

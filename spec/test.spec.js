@@ -1,6 +1,7 @@
 'use strict';
 
 var _ = require("underscore-contrib");
+
 var csbs = require("../index");
 var fake = require("./utils/fake");
 
@@ -120,7 +121,7 @@ describe('csbind-server test', function() {
             });
 
             it("observable関数を呼び出したとき第一引数はStringでないといけない。", function() {
-                csbs.observable(0, fs, necKeys, funcs.err);
+                csbs.observable(0, fs, necKeys,'default', funcs.err);
                 expect(funcs.err).toHaveBeenCalled();
             });
 
@@ -132,7 +133,7 @@ describe('csbind-server test', function() {
                     remove: ['test'],
                     insert: ['test'],
                     add: ['test']
-                }, necKeys, funcs.err);
+                }, necKeys,'default', funcs.err);
                 expect(funcs.err).toHaveBeenCalled();
             });
 
@@ -144,28 +145,28 @@ describe('csbind-server test', function() {
                     remove: funcs.receive,
                     insert: funcs.receive,
                     add: funcs.receive
-                }, necKeys, funcs.err);
+                }, necKeys,'default', funcs.err);
                 expect(funcs.err).toHaveBeenCalled();
             });
 
             it("observable関数を呼び出したとき第三引数はstringの配列でないといけない。", function() {
-                csbs.observable('test', fs, [0, '0'], funcs.err);
+                csbs.observable('test', fs, [0, '0'],'default', funcs.err);
                 expect(funcs.err).toHaveBeenCalled();
             });
 
-            it("observable関数を呼び出したとき第四引数を登録する場合は関数でないといけない。", function() {
+            it("observable関数を呼び出したとき第五引数を登録する場合は関数でないといけない。", function() {
                 expect(function() {
-                    csbs.observable('test', fs, necKeys, ['test']);
+                    csbs.observable('test', fs, necKeys,'default', ['test']);
                 }).toThrow();
             });
 
-            it("observable関数を呼び出したとき、第四引数に関数が登録されていてエラーが起きると、その関数が呼ばれる。", function() {
-                csbs.observable(0, fs, necKeys, funcs.err);
+            it("observable関数を呼び出したとき、第五引数に関数が登録されていてエラーが起きると、その関数が呼ばれる。", function() {
+                csbs.observable(0, fs, necKeys, 'default',funcs.err);
                 expect(funcs.err).toHaveBeenCalled();
             });
 
             it("observable関数を呼び出したとき、登録した関数はまだ呼ばれない。", function() {
-                csbs.observable('test', fs, necKeys, funcs.err);
+                csbs.observable('test', fs, necKeys, 'default',funcs.err);
                 expect(funcs.send).not.toHaveBeenCalled();
                 expect(funcs.receive).not.toHaveBeenCalled();
                 expect(funcs.edit).not.toHaveBeenCalled();
@@ -181,13 +182,8 @@ describe('csbind-server test', function() {
 
             it("start関数には引数が必要である。", function() {
                 expect(function() {
-                    csbs.observable('test', fs, necKeys).stSart();
+                    csbs.observable('test', fs, necKeys).start();
                 }).toThrow();
-            });
-
-            it("start関数の2つ目の引数は任意である。", function() {
-                csbs.observable('test', fs, necKeys).start(funcs.get);
-                expect(funcs.err).not.toHaveBeenCalled();
             });
 
             it("start関数を呼び出したとき第一引数は、登録したキーを持つオブジェクトの配列を返す関数でないといけない。", function() {
