@@ -522,7 +522,7 @@ var csbs = {};
           funs.send('csbindReceive' + name, data);
         }
       } else {
-        _check(data.values, lastValues);
+        _check(data.values, funs.get());
       }
     }
 
@@ -541,13 +541,15 @@ var csbs = {};
                 eachCall(funs.updates, lastValues, data);
                 funs.send('csbindReceive' + name, data);
                 d.resolve(returnObj);
-              } else{
+              } else {
                 d.reject(returnObj);
               }
             }, errcb)();
           });
       } else {
-        _check(data.values, lastValues);
+        _getValuesDef().then(function(rData) {
+          _check(data.values, rData);
+        });
       }
       return d.promise;
     }
