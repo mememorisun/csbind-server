@@ -539,15 +539,15 @@ describe('csbind-server test', function() {
                 var obs = csbs.observable('test', fs, necKeys).start(funcs.get).addUpdates([funcs.update, funcs.update]).set({
                     values: [val, val],
                     mode: 'edit',
-                    index: 1
+                    index: 0
                 });
-                expect(_.isEqual([rval(0), val, val], chk.newValues)).toBeTruthy();
+                expect(_.isEqual([ val, val, rval(2)], chk.newValues)).toBeTruthy();
                 expect(_.isEqual({
                     values: [val, val],
                     mode: 'edit',
-                    index: 1
+                    index: 0
                 }, chk.data)).toBeTruthy();
-                expect(_.isEqual([rval(0), val, val], obs.get())).toBeTruthy();
+                expect(_.isEqual([val, val, rval(2)], obs.get())).toBeTruthy();
                 expect(funcs.update.calls.count()).toBe(2);
             });
 

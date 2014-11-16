@@ -532,7 +532,7 @@ var csbs = {};
         plReceiveDef(null, data, funs)
           .then(function() {
             return tryDo(function() {
-              return funs.get();
+              return _getValuesDef();
             }, errcb)();
           })
           .then(function(rData) {
@@ -556,7 +556,7 @@ var csbs = {};
 
     function _set(data, errcb) {
       tryDo(function() {
-        preSet(necKeys, sendModeKeys, sendModePropMap, lastValues)(function(data, errcb) {
+        preSet(necKeys, sendModeKeys, sendModePropMap, _getValues())(function(data, errcb) {
           _basicSet(data);
         }, data, errcb);
       }, errcb)();
@@ -565,15 +565,17 @@ var csbs = {};
 
     function _setDef(data, errcb) {
       return tryDo(function() {
-        return preSet(necKeys, sendModeKeys, sendModePropMap, lastValues)(function(data, errcb) {
-          return _basicSetDef(data, errcb);
-        }, data, errcb);
+        _getValuesDef().then(function(rData) {
+          return preSet(necKeys, sendModeKeys, sendModePropMap, rData)(function(data, errcb) {
+            return _basicSetDef(data, errcb);
+          }, data, errcb);
+        });
       }, errcb)();
     }
 
     function _setReceived(data, errcb) {
       tryDo(function() {
-        preReceive(necKeys, receiveModeKeys, receiveModePropMap, lastValues)(function(data, errcb) {
+        preReceive(necKeys, receiveModeKeys, receiveModePropMap, _getValues())(function(data, errcb) {
           _basicSet(data);
         }, data, errcb);
       }, errcb)();
@@ -581,9 +583,11 @@ var csbs = {};
 
     function _setReceivedDef(data, errcb) {
       tryDo(function() {
-        preReceive(necKeys, receiveModeKeys, receiveModePropMap, lastValues)(function(data, errcb) {
-          _basicSetDef(data, errcb);
-        }, data, errcb);
+        _getValuesDef().then(function(rData) {
+          preReceive(necKeys, receiveModeKeys, receiveModePropMap, rData)(function(data, errcb) {
+            _basicSetDef(data, errcb);
+          }, data, errcb);
+        });
       }, errcb)();
     }
 

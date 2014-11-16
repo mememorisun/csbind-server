@@ -1,6 +1,6 @@
 {
   "name": "csbind-server",
-  "version": "0.0.0beta2",
+  "version": "0.0.0beta3",
   "main": "./index.js",
   "dependencies": {
     "underscore-contrib" : "0.3.x",
